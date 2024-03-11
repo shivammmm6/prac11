@@ -1,0 +1,96 @@
+1) K-means Clustering Algorithm
+
+import pandas as pd
+dataset = pd.read_csv("/content/sample_data/Mall_Customer.csv")
+dataset
+
+x = dataset.iloc[:,[3,4]].values
+
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as mtp
+wcss_list=[]
+for i in range(1,11):
+  kmeans=KMeans(n_clusters=i,init='k-means++',random_state=42)
+  kmeans.fit(x)
+  wcss_list.append(kmeans.inertia_)
+mtp.plot(range(1,11),wcss_list)
+mtp.title('The Elbow Method Graph')
+mtp.xlabel('Number of clusters(k)')
+mtp.ylabel('wcss_list')
+mtp.show()
+
+kmeans=KMeans(n_clusters=5,init='k-means++',random_state=42)
+y_predict=kmeans.fit_predict(x)
+mtp.scatter(x[y_predict==0,0],x[y_predict==0,1],s=100,c='blue',label='Cluster 1')#for first cluster
+mtp.scatter(x[y_predict==1,0],x[y_predict==1,1],s=100,c='green',label='Cluster 2')#for two cluster
+mtp.scatter(x[y_predict==2,0],x[y_predict==2,1],s=100,c='red',label='Cluster 3')#for three cluster
+mtp.scatter(x[y_predict==3,0],x[y_predict==3,1],s=100,c='cyan',label='Cluster 4')#for four cluster
+mtp.scatter(x[y_predict==4,0],x[y_predict==4,1],s=100,c='magenta',label='Cluster 5')#for five cluster
+mtp.scatter(kmeans.cluster_centers_[:,0],kmeans.cluster_centers_[:,1],s=300,c='yellow',label='Centroid')
+mtp.title('Clusters of customers')
+mtp.xlabel('Annual income(k$)')
+mtp.ylabel('Spending Score(1-100)')
+mtp.legend()
+mtp.show()
+
+
+
+
+
+
+2)Agglomerative Clusterring
+
+#Extract the matrix of features
+x = dataset.iloc[:,[3,4]].values
+
+import scipy.cluster.hierarchy as shc
+dendro = shc.dendrogram(shc.linkage(x, method="ward"))
+mtp.title("Dendrogrma Plot")
+mtp.ylabel("Euclidean Distances")
+mtp.xlabel("Customers")
+mtp.show()
+
+
+
+from sklearn.cluster import AgglomerativeClustering
+
+hc = AgglomerativeClustering(n_clusters = 5, affinity='euclidean', linkage='ward')
+
+y_pred hc.fit_predict(x)
+
+#visualizing clusters
+
+#Cluster 1
+
+plt.scatter(x[y_pred == 0,0], x[y_pred == 0,1],s=100,c='blue', label='Cluster 1')
+
+#Cluster 2
+
+plt.scatter(x[y_pred == 1,0], x[y_pred == 1,1],s=100,c='green', label='Cluster 2')
+
+#Cluster 3
+
+plt.scatter(x[y_pred == 2,0], x[y_pred == 2,1],s=100, c='red', label='Cluster 3')
+
+#Cluster 4
+
+plt.scatter(x[y_pred == 3,0],x[y_pred == 3,1],s=100,c='cyan', label='Cluster 4')
+
+#Cluster 5
+
+plt.scatter(x[y_pred == 4,0], x[y_pred == 4,1],s=100, c='magenta', label='Cluster 5')
+
+plt.title('Clusters of customers')
+
+plt.xlabel('Annual Income (k$)')
+
+plt.ylabel('Spending Score (1-100)')
+
+plt.legend()
+
+plt.show()
+
+
+
+
+
